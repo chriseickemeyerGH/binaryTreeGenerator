@@ -1,6 +1,7 @@
 
 public class TreeNode {
 	private int val, index, position;
+	private boolean isLeftChild, isRightChild;
 	private TreeNode left, right;
 
 	public TreeNode(int val, int index, int position) {
@@ -12,6 +13,14 @@ public class TreeNode {
 
 	public int getPosition() {
 		return position;
+	}
+
+	public boolean isLeft() {
+		return isLeftChild;
+	}
+
+	public boolean isRight() {
+		return isRightChild;
 	}
 
 	public void setLeft(TreeNode left) {

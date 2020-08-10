@@ -137,8 +137,10 @@ public class TreeGenerator {
 		if (num == 0)
 			return 1;
 		int count = 0;
+
 		if (num < 0)
 			count++;
+
 		while (num != 0) {
 			num /= 10;
 			count++;
