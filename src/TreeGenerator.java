@@ -14,9 +14,7 @@ public class TreeGenerator {
 	}
 
 	private TreeNode build() {
-		int rows = (int) calculateRows();
-		int rootPosition = (int) Math.pow(2, rows) * 4;
-		return buildHelper(0, rootPosition, rootPosition / 4);
+		return buildHelper(0, initialRootPosition(), initialRootPosition() / 4);
 	}
 
 	private TreeNode buildHelper(int index, int position, int offset) {
@@ -83,19 +81,16 @@ public class TreeGenerator {
 
 	private TreeNode createBST() throws NullPointerException {
 		Arrays.sort(treeVals);
-		int rows = (int) calculateRows();
-		int rootPosition = (int) Math.pow(2, rows) * 4;
-
-		return bstHelper(0, treeVals.length - 1, rootPosition, rootPosition / 4);
+		return bstHelper(0, treeVals.length - 1, initialRootPosition(), initialRootPosition() / 4);
 	}
 
-	private TreeNode bstHelper(int left, int right, int position, int offSet) {
+	private TreeNode bstHelper(int left, int right, int position, int offset) {
 		if (left > right)
 			return null;
 		int mid = left + (right - left) / 2;
 		TreeNode node = new TreeNode(treeVals[mid], position);
-		node.setLeft(bstHelper(left, mid - 1, position - offSet, offSet / 2));
-		node.setRight(bstHelper(mid + 1, right, position + offSet, offSet / 2));
+		node.setLeft(bstHelper(left, mid - 1, position - offset, offset / 2));
+		node.setRight(bstHelper(mid + 1, right, position + offset, offset / 2));
 
 		return node;
 
@@ -159,8 +154,12 @@ public class TreeGenerator {
 		return count;
 	}
 
-	private double calculateRows() {
-		return Math.log(treeVals.length) / Math.log(2);
+	private int calculateRows() {
+		return (int) (Math.log(treeVals.length) / Math.log(2));
+	}
+
+	private int initialRootPosition() {
+		return (int) Math.pow(2, calculateRows()) * 4;
 	}
 
 	private String generateSpacing(int position) {
