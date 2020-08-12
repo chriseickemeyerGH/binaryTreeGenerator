@@ -94,8 +94,8 @@ public class TreeGenerator {
 			return null;
 		int mid = left + (right - left) / 2;
 		TreeNode node = new TreeNode(treeVals[mid], position);
-		node.setLeft(bstHelper(left, mid - 1, node.getPosition() - offSet, offSet / 2));
-		node.setRight(bstHelper(mid + 1, right, node.getPosition() + offSet, offSet / 2));
+		node.setLeft(bstHelper(left, mid - 1, position - offSet, offSet / 2));
+		node.setRight(bstHelper(mid + 1, right, position + offSet, offSet / 2));
 
 		return node;
 
