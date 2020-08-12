@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -5,7 +6,6 @@ import java.util.Queue;
 
 public class TreeGenerator {
 	private Integer[] treeVals;
-	private TreeNode root;
 
 	public TreeGenerator(Integer[] treeVals) throws EmptyException {
 		this.treeVals = treeVals;
@@ -13,41 +13,32 @@ public class TreeGenerator {
 			throw new EmptyException("No valid root provided");
 	}
 
-	public void buildTree() {
-		// level order build
-		Queue<TreeNode> queue = new LinkedList<>();
+	private TreeNode build() {
 		int rows = (int) calculateRows();
-		root = new TreeNode(treeVals[0], 0, (int) Math.pow(2, rows) * 4);
-		int offSet = root.getPosition() / 4;
-		queue.add(root);
-
-		while (!queue.isEmpty()) {
-			int nodesLeft = queue.size();
-			while (nodesLeft-- > 0) {
-				TreeNode node = queue.remove();
-
-				int leftIdx = node.getIndex() * 2 + 1;
-				int rightIdx = node.getIndex() * 2 + 2;
-				int parentPosition = node.getPosition();
-
-				if (leftIdx < treeVals.length && treeVals[leftIdx] != null) {
-					TreeNode left = new TreeNode(treeVals[leftIdx], leftIdx, parentPosition - offSet);
-					node.setLeft(left);
-					queue.add(left);
-				}
-
-				if (rightIdx < treeVals.length && treeVals[rightIdx] != null) {
-					TreeNode right = new TreeNode(treeVals[rightIdx], rightIdx, parentPosition + offSet);
-					node.setRight(right);
-					queue.add(right);
-				}
-			}
-			offSet /= 2;
-		}
+		int rootPosition = (int) Math.pow(2, rows) * 4;
+		return buildHelper(0, rootPosition, rootPosition / 4);
 	}
 
-	public void printTree() {
+	private TreeNode buildHelper(int index, int position, int offset) {
+		if (index >= treeVals.length)
+			return null;
+		TreeNode node = new TreeNode(treeVals[index], position);
+		int left = 2 * index + 1;
+		int right = 2 * index + 2;
+		node.setLeft(buildHelper(left, position - offset, offset / 2));
+		node.setRight(buildHelper(right, position + offset, offset / 2));
+
+		return node;
+
+	}
+
+	public void printTree(String type) {
 		System.out.println();
+		TreeNode root;
+		if (type.equals("normal"))
+			root = build();
+		else
+			root = createBST();
 		Queue<TreeNode> q = new LinkedList<>();
 		q.add(root);
 
@@ -90,9 +81,29 @@ public class TreeGenerator {
 		}
 	}
 
-	public void heapify(boolean toMaxHeap) throws NullPointerException {
+	private TreeNode createBST() throws NullPointerException {
+		Arrays.sort(treeVals);
+		int rows = (int) calculateRows();
+		int rootPosition = (int) Math.pow(2, rows) * 4;
+
+		return bstHelper(0, treeVals.length - 1, rootPosition, rootPosition / 4);
+	}
+
+	private TreeNode bstHelper(int left, int right, int position, int offSet) {
+		if (left > right)
+			return null;
+		int mid = left + (right - left) / 2;
+		TreeNode node = new TreeNode(treeVals[mid], position);
+		node.setLeft(bstHelper(left, mid - 1, node.getPosition() - offSet, offSet / 2));
+		node.setRight(bstHelper(mid + 1, right, node.getPosition() + offSet, offSet / 2));
+
+		return node;
+
+	}
+
+	public void heapify(String heapType) throws NullPointerException {
 		for (int i = treeVals.length / 2 - 1; i >= 0; i--) {
-			if (toMaxHeap)
+			if (heapType.equals("max"))
 				heapifyMaxHeap(i, treeVals.length);
 			else
 				heapifyMinHeap(i, treeVals.length);

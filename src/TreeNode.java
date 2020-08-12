@@ -1,11 +1,10 @@
 
 public class TreeNode {
-	private int val, index, position;
+	private int val, position;
 	private TreeNode left, right;
 
-	public TreeNode(int val, int index, int position) {
+	public TreeNode(int val, int position) {
 		this.val = val;
-		this.index = index;
 		this.position = position;
 		left = right = null;
 	}
@@ -20,10 +19,6 @@ public class TreeNode {
 
 	public void setRight(TreeNode right) {
 		this.right = right;
-	}
-
-	public int getIndex() {
-		return index;
 	}
 
 	public int getVal() {

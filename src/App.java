@@ -3,13 +3,9 @@ import java.util.Scanner;
 public class App {
 	public static void displayCommands() {
 		System.out.println("Commands: \n" + "build -> build tree in default order of values\n"
+				+ "bst build -> binary search tree build (if possible)\n"
 				+ "min heap build -> build tree as a min heap\n" + "max heap build -> build tree as max heap\n"
 				+ "commands -> show commands\n" + "quit -> exit app\n");
-	}
-
-	public static void constructTree(TreeGenerator tree) {
-		tree.buildTree();
-		tree.printTree();
 	}
 
 	public static Integer[] convertToIntArray(String s) {
@@ -38,15 +34,18 @@ public class App {
 				System.out.println("Enter command:");
 				command = scanner.nextLine();
 				TreeGenerator tree = new TreeGenerator(vals);
+				String normalBuild = "normal";
 
 				if (command.toLowerCase().equals("build")) {
-					constructTree(tree);
-				} else if (command.toLowerCase().equals("min heap build")) {
-					tree.heapify(false);
-					constructTree(tree);
+					tree.printTree(normalBuild);
+				} else if (command.toLowerCase().equals("bst build"))
+					tree.printTree("BST");
+				else if (command.toLowerCase().equals("min heap build")) {
+					tree.heapify("min");
+					tree.printTree(normalBuild);
 				} else if (command.toLowerCase().equals("max heap build")) {
-					tree.heapify(true);
-					constructTree(tree);
+					tree.heapify("max");
+					tree.printTree(normalBuild);
 				} else if (command.toLowerCase().equals("commands"))
 					displayCommands();
 				else if (command.toLowerCase().equals("quit"))
