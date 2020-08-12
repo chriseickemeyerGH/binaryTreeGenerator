@@ -21,7 +21,7 @@ public class App {
 		return array;
 	}
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		displayCommands();
 		try (Scanner scanner = new Scanner(System.in)) {
 			String command = "";
